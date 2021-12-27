@@ -1,0 +1,32 @@
+{
+  "name": "mpeg-dash-hls-nodejs-streamer",
+  "version": "1.0.0",
+  "description": "Liteweight DASH and HLS VOD Streamer using NodeJS.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WINOFFRG/mpeg-dash-hls-nodejs-streamer.git"
+  },
+  "keywords": [
+    "HLS",
+    "MPEG",
+    "DASH",
+    "NodeJS",
+    "VOD",
+    "ExpressJS"
+  ],
+  "author": "winoffrg",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/WINOFFRG/mpeg-dash-hls-nodejs-streamer/issues"
+  },
+  "homepage": "https://github.com/WINOFFRG/mpeg-dash-hls-nodejs-streamer#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.2",
+    "winston": "^3.3.3"
+  }
+}
