@@ -26,7 +26,11 @@
   "homepage": "https://github.com/WINOFFRG/mpeg-dash-hls-nodejs-streamer#readme",
   "dependencies": {
     "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
     "express": "^4.17.2",
+    "firebase": "^9.6.1",
+    "firebase-admin": "^10.0.1",
+    "multer": "^1.4.4",
     "winston": "^3.3.3"
   }
 }
