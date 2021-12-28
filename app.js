@@ -26,7 +26,8 @@ app.use(config.api.prefix, routes());
 
 /* Error Handling */
 app.use((err, req, res, next) => {
-    winston.error(err.message, {url: req.url, err});
+    logger.error(err.stack);
+    logger.error(err.message, {url: req.url, err});
     res.status(500).send({error: "Internal Server Error!"});
     next;
 });
