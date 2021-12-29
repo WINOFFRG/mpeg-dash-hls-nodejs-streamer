@@ -105,3 +105,4 @@ dist
 
 serviceAccountKey.json
 uploads/*
+tools/*

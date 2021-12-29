@@ -4,7 +4,6 @@ const path = require('path');
 const logger = require('./loaders/logger');
 const config = require('./config');
 const routes = require('./api');
-const bucketStorage = require('./loaders/firebase-storage');    
 
 const app = express();
 
@@ -26,8 +25,7 @@ app.use(config.api.prefix, routes());
 
 /* Error Handling */
 app.use((err, req, res, next) => {
-    logger.error(err.stack);
-    logger.error(err.message, {url: req.url, err});
+    logger.error(err, err.stack);
     res.status(500).send({error: "Internal Server Error!"});
     next;
 });
