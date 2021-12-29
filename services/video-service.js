@@ -13,52 +13,99 @@ const storage = multer.diskStorage({
     },
 
     filename: (req, file, cb) => {
-        cb(null, `${ Date.now() + path.extname(file.originalname) }`);
-    }
+        cb(null, `${ Date.now() + path.extname(file.originalname).toLowerCase() }`);
+    },
 });
 
 const multerUpload = multer({ 
     storage: storage,
-    limits: { fileSize: 1 * 1024 * 1024 },
+    limits: { fileSize: 100 * 1024 * 1024 },
+    fileFilter: (req, file, cb) => {
+
+        const allowedTypes = ['.mp4', '.webm', '.mkv', '.avi', '.mpeg'];
+
+        if(!allowedTypes.includes(path.extname(file.originalname).toLowerCase())) {    
+            return cb(
+                new multer.MulterError('CUSTOM', {
+                    message: 'File type not allowed',
+                    code: 'FILE_TYPE_NOT_ALLOWED',
+                })
+            );   
+        }
+
+        cb(null, true);
+    }
 }).single('file');
 
+const multerPromise = (req, res) => {
+
+    return new Promise((resolve, reject) => {
+        multerUpload(req, res, function (err) {
+        
+            if(err) {
+                reject(err);
+            }
+
+            resolve(req.file);
+        });
+    });
+};
 class videoManager {
 
     static async uploadVideo(req, res) {
 
-        let response = {
-            status: '',
-            data: {},
-        }
+        try {
+            // await multerFileFilter(req, res);
+            await multerPromise(req, res);
+            videoManager.processVideo(req.local);
 
-        multerUpload(req, res, function (err) {
+            return {
+                status: 200,
+                data: req.locals,
+            };
 
-            if(err) {
-                logger.error(err, {err});
+        } catch (error) {
 
-                if(err instanceof multer.MulterError) {
-                    response.status = 400;
-                    response.data = {
-                        error: err.message,
-                    }
+            videoManager.preCleanUp(req);
+
+            if(error instanceof multer.MulterError) {
+
+                if(!error.message) error.message = error.field.message;
+
+                return {
+                    status: 400,
+                    data: {
+                        message: "Request failed to process.",
+                        error: error.message || error.field.message,
+                    }, 
                 }
+            };
 
-                videoManager.cleanUp(req);
-                return;
-            }
-            //ye kaam asyc ho nahi raha phir bhi response khaali print ho rha hai
-
-            response.status = 200;
-            response.data = req.locals;
-        });
-
-        console.log(response);
-        return response;
+            return error;
+        }
     }
 
-    static async cleanUp(req) {
+    static async processVideo(req) {
+
+        try {
+            //checkVideoCorrupt()
+            //processVideo()
+            //postCleanUp()
+            //uploadVideo()
+            //scheduleJobs()
+        } catch (error) {
+            //prepareError()
+        }
+    }
+
+    static async preCleanUp(req) {
         const filePath = path.join(__dirname, `../uploads/${ req.locals.id }`);
-        await fs.rm(filePath, {recursive: true});
+        
+        try {
+            await fs.rm(filePath, {recursive: true});
+        } catch (error) {
+        
+        }
     }
 
     // getVideoStatus();

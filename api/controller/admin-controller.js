@@ -14,20 +14,18 @@ const uploadVideo = async (req, res, next) => {
     const response = await videoManager.uploadVideo(req, res);    
     
     if(!response.status) {
-        next(response.data);
+        next(response);
         return;
     }
     
     res.status(response.status).send(response.data);
 };
 
-const upload = [uploadVideo];
-
 const deleteVideo = async (req, res) => {
 };
 
 module.exports = {
     getVideoStatus,
-    upload,
+    uploadVideo,
     deleteVideo,
 }

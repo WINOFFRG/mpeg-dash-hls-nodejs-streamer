@@ -31,7 +31,7 @@ app.use((err, req, res, next) => {
 });
 
 process.on('unhandledRejection', err => {
-    logger.error(err.message, {err});
+    // logger.error(err.message, {err});
     throw err;
 });
 
