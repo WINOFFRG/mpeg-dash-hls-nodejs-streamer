@@ -6,7 +6,7 @@ const getVideoStatus = async (req, res) => {
     const requestId = (req.params.requestId).toString();
     const response = await session.getStaus(requestId);
     
-    if(!response.status) {
+    if(!response || !response.status) {
         next(response);
         return;
     }
@@ -16,11 +16,11 @@ const getVideoStatus = async (req, res) => {
 
 
 const uploadVideo = async (req, res, next) => {
-    
+
     req.locals = await session.generate();
     const response = await videoManager.uploadVideo(req, res);    
     
-    if(!response.status) {
+    if(!response || !response.status) {
         next(response);
         return;
     }

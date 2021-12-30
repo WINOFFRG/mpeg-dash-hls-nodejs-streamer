@@ -13,14 +13,11 @@ async function generateSession() {
     return sessionObj;
 }
 
-async function restoreSession() {
-
-}
-
 async function findSession(id) {
     
     const sessionPath = path.resolve(__dirname + '../../../uploads/' + id);
     const sessionExists = fs.existsSync(sessionPath);
+    
     if(!sessionExists) {
         return {
             status: 404,
@@ -30,7 +27,6 @@ async function findSession(id) {
         }
     }
     const sessionObj = await fsPromise.readFile(sessionPath + `/status.json`, 'utf8');
-    console.log(sessionObj);
 
     return {
         status: 200,
@@ -38,25 +34,36 @@ async function findSession(id) {
     }
 }
 
+async function updateSession(sessionData) {
+    const sessionPath = path.resolve(__dirname + `../../../uploads/${ sessionData.session }/status.json`);
+    await fsPromise.writeFile(sessionPath, JSON.stringify(sessionData));
+}
+
 async function generateStatus(sessionObj) {
     
-    let expiry = sessionObj.contentId;
-    expiry = new Date(expiry);
-    expiry = expiry.setDate(expiry.getDate() + 1);
+    try {
+        let expiry = sessionObj.contentId;
+        expiry = new Date(expiry);
+        expiry = expiry.setDate(expiry.getDate() + 1);
+        
+        sessionObj['expiry'] = new Date(expiry).toLocaleDateString('en-IN', {
+            hour: 'numeric',
+            minute: 'numeric'
+        });
     
-    sessionObj['expiry'] = new Date(expiry).toLocaleDateString('en-IN', {
-        hour: 'numeric',
-        minute: 'numeric'
-    });
-
-   await fsPromise.writeFile(__dirname + `../../uploads/${ sessionObj.session }/status.json`, JSON.stringify(sessionObj));
+        const sessionPath = path.resolve(__dirname + `../../../uploads/${ sessionObj.session }/status.json`);
+        await fsPromise.writeFile(sessionPath, JSON.stringify(sessionObj));
+        
+    } catch (error) {
+        console.log(error);
+    }
 }
 
 const session = {
     generate: generateSession,
-    restore: restoreSession,
     setStatus: generateStatus,
     getStaus: findSession,
+    updateSession,
 }
 
 module.exports = session;

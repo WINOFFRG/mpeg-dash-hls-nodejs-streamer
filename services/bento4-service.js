@@ -1,35 +1,65 @@
 const { exec } = require('child_process');
+const { type } = require('os');
+const binaryPath = "./Tools/Bento4-SDK/bin";
+const relativePath = "../../../uploads/";
 
-const execute = exec(`mp4info.exe ../../../uploads/90bfdcdb-6028-4b2c-b39c-ee5fc96cee24/1640852288054.mp4`, { cwd: '../Tools/Bento4-SDK/bin' });
-
-// execute.on('exit', function(code) {
-//     console.log('Child process exited with exit code ' + code);
+// const execute = async (command) => exec(command, { cwd: binaryPath, shell: process.env.ComSpec }, function(error, stdout, stderr) {
+    
+//     if(stdout) {
+//         return stdout;   
+//     }
+//     if (error) {
+//         console.log(error);
+//     }
 // });
 
-//modify logger to push log output in log file
+async function execute(command) {
 
-class Bento4 {
-    
-    static execute() {
-        execute.stdout.on('data', function(data) {
-            
-            let lines = data.toString().split('\n');
-            lines.forEach(line => {
-                // if(line.includes('fragments:')) {
-                    console.log(line);
-                    // return;
-                // }
+        return new Promise((resolve, reject) => {
+            exec(command, { cwd: binaryPath, shell: process.env.ComSpec }, function(error, stdout, stderr) {
+                if(stdout) {
+                    resolve(stdout);
+                }
+                if (error) {
+                    reject(error);
+                }
             });
         });
-
-        execute.stderr.on('data', function(data) {
-            console.log('stderr: ' + data);
-        });
+}
+class Bento4 {
+    
+    static getVideoInfo() {
 
     }
 
-    static getVideoInfo() {
+    static async checkFragments(sessionObj) {
 
+        try {
+            const file = `${relativePath}${sessionObj.session}/${sessionObj.contentId}.mp4`;
+            const data = await execute(`mp4info.exe ${file}`);                
+            const lines = data.split('\n');
+
+            for (const line in lines) {
+                
+                let lineData = lines[line].toString();
+                
+                if( lineData.includes("fragments:  yes")) {
+                    // console.log(lineData);
+                    return true;
+                }
+                
+                if( lineData.includes("fragments:  no")) {
+                    return false;
+                }
+
+                if( lineData.includes("No movie found in the file")) {
+                    return new Error("No movie found in the file");
+                }
+            }
+
+        } catch (error) {
+            
+        }
     }
 
     //fragmentVideo()
@@ -37,28 +67,12 @@ class Bento4 {
     //postConversion()
 }
 
-Bento4.execute();
+let sessionObj = {
+	"session": "d393c612-9741-48b5-b211-839e5bab1370",
+	"contentId": 1640890969096,
+	"expiry": "1/1/2022, 12:32 am"
+};
 
-/*
-    startSessionLogger()
+// Bento4.checkFragments(sessionObj);
 
-    {
-        type: 'progress',
-        status: '',
-        jobs: {
-            health: '',
-            preCheck: '',
-            fragments: '',
-            converting: '',
-            cleanUp: '',
-            uploading: '',
-        }
-    },
-
-    {
-        type: 'success',
-        status: '',
-        playbackUrl: '',
-        
-    }
-*/
+module.exports = Bento4;

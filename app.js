@@ -4,10 +4,14 @@ const path = require('path');
 const logger = require('./loaders/logger');
 const config = require('./config');
 const routes = require('./api');
+const bodyParser = require('body-parser');
 
 const app = express();
 
 /* Configuring Application */
+app.use(bodyParser.urlencoded({
+    extended: true
+ }));
 app.use(express.json());
 app.use(cors());
 app.set('x-powered-by', false);
@@ -31,7 +35,8 @@ app.use((err, req, res, next) => {
 });
 
 process.on('unhandledRejection', err => {
-    logger.error(err.message, {err});
+    logger.error(err, err.stack);
+    // logger.error(err.message, {err});
     throw err;
 });
 

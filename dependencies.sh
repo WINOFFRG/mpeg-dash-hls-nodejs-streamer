@@ -27,7 +27,7 @@ if [ "$machine" = "Mac" ]; then
     echo "Extracting Zip ... 📁"
     unzip -q -o Bento4-SDK.zip;
     echo "Final Cleanup 🗑️"
-    mv Bento4-SDK-*/ Bento4-SDK/;
+    mv Bento4-SDK-*/ ./Bento4-SDK/;
     rm -rf Bento4-SDK.zip
     echo "Installed Bento4 SDK in ${PWD}/Bento4-SDK";
 
@@ -37,7 +37,7 @@ elif [ "$machine" = "Linux" ]; then
     echo "Extracting Zip ... 📁"
     unzip -q -o Bento4-SDK.zip;
     echo "Final Cleanup 🗑️"
-    mv Bento4-SDK-*/ Bento4-SDK/;
+    mv Bento4-SDK-*/ ./Bento4-SDK/;
     rm -rf Bento4-SDK.zip
     echo "Installed Bento4 SDK in ${PWD}/Bento4-SDK";
 
@@ -47,7 +47,7 @@ else
     echo "Extracting Zip ... 📁"
     unzip -q -o Bento4-SDK.zip;
     echo "Final Cleanup 🗑️"
-    mv Bento4-SDK-*/ Bento4-SDK/;
+    mv Bento4-SDK-*/ ./Bento4-SDK/;
     rm -rf Bento4-SDK.zip
     echo "Installed Bento4 SDK in ${PWD}/Bento4-SDK";
 

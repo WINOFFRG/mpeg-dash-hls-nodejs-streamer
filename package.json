@@ -25,6 +25,7 @@
   },
   "homepage": "https://github.com/WINOFFRG/mpeg-dash-hls-nodejs-streamer#readme",
   "dependencies": {
+    "body-parser": "^1.19.1",
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
     "express": "^4.17.2",
