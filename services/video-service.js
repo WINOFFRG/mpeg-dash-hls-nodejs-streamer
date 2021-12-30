@@ -2,10 +2,11 @@ const multer = require('multer');
 const fs = require('fs').promises;
 const path = require('path');
 const logger = require('../loaders/logger');
+const session = require('../api/controller/session');
 
 const storage = multer.diskStorage({
     destination: async (req, file, cb) => {
-        const filePath = path.join(__dirname, `../uploads/${ req.locals.id }`);
+        const filePath = path.join(__dirname, `../uploads/${ req.locals.session }`);
 
         /* Multer by default doesn't makes file if doesn't exisst, so use FS*/
         await fs.mkdir(filePath, {recursive: true});
@@ -13,7 +14,7 @@ const storage = multer.diskStorage({
     },
 
     filename: (req, file, cb) => {
-        cb(null, `${ Date.now() + path.extname(file.originalname).toLowerCase() }`);
+        cb(null, `${ req.locals.contentId + path.extname(file.originalname).toLowerCase() }`);
     },
 });
 
@@ -55,9 +56,9 @@ class videoManager {
     static async uploadVideo(req, res) {
 
         try {
-            // await multerFileFilter(req, res);
             await multerPromise(req, res);
-            videoManager.processVideo(req.local);
+
+            videoManager.processVideo(req.locals);
 
             return {
                 status: 200,
@@ -85,9 +86,10 @@ class videoManager {
         }
     }
 
-    static async processVideo(req) {
+    static async processVideo(sessionObj) {
 
         try {
+            session.setStatus(sessionObj);
             //checkVideoCorrupt()
             //processVideo()
             //postCleanUp()
@@ -108,11 +110,7 @@ class videoManager {
         }
     }
 
-    // getVideoStatus();
-    // deleteVideo();
-    // scheduleDeleteJob();
-    // fileValidations();
-    // afterJob()
+    
 }
 
 module.exports = {
