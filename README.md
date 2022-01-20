@@ -19,12 +19,12 @@ Liteweight DASH and HLS VOD Streamer using NodeJS.
 
     Request Type| Endpoint | Meta
     ------------ | -------| -----|
-    |`POST`|/api/admin/upload | Will allow you to upload video files and get session ID.
+    |`POST`|`/api/admin/upload` | Will allow you to upload video files and get session ID.
 
     **Headers:**
     Key | Value | Required
     ------------ | -------| -----|
-    |Content-Type| `multipart/form-data` | False
+    |`Content-Type`| `multipart/form-data` | False
 
     **Body:** 
     
@@ -34,10 +34,50 @@ Liteweight DASH and HLS VOD Streamer using NodeJS.
     **Response:**
 
         {
-            "session":"<unique-session-id>",
-            "contentId":<unique-content-id>,
-            "fileType":"<file-extension-type>",
-            "expiry":"<session-expiry>"
+            "session":"f6b7c492-e78f-4b26-b95f-81ea8ca21a18",       <unique-session-id>
+            "contentId":1642708128072,                              <unique-content-id>
+            "fileType":".mp4",                                      <file-extension-type>
+            "expiry":"22/1/2022, 1:18 am"                           <session-expiry>
         }
 
-2. 
+    **Developer's Note:**
+    1.  The API had been beautifully designed to handle edge cases like `Max File Limit`, `Known File Types`, Fallback in case of Failure.
+    2.  [Multer](#) Library has been used to handle the file upload. 
+    3.  Proper Error Codes are also available to the user in Response.
+   
+2. Video Status API
+
+    Request Type| Endpoint | Meta
+    ------------ | -------| -----|
+    |`GET`|`api/admin/:sessionID/status` | User must pass the session ID in the URL.
+
+    **Headers:**
+    Key | Value | Required
+    ------------ | -------| -----|
+    |None| None | 
+
+    **Response:**
+
+        {
+            "session": "f6b7c492-e78f-4b26-b95f-81ea8ca21a18",
+            "contentId": 1642708128072,  
+            "fileType": ".mp4",
+            "expiry": "22/1/2022, 1:18 am",
+            "data": {
+                "type": "timeline",
+                "status": "complete",
+                "jobs": {
+                    "health": "success",
+                    "fragments": "success",
+                    "converting": "success",
+                    "uploading": "success",
+                    "cleaning": "success"
+                }
+            },
+            "publicURL": "https://storage.googleapis.com/nodejs-streaming.appspot.com/uploads/f6b7c492-e78f-4b26-b95f-81ea8ca21a18/1642708128072/manifest.mpd"
+        }
+
+    **Developer's Note:**
+    1.  This route is a ping route especially designed for frontend to show the current session updates and status of each job.
+    2.  I have maintained a `status.json` file under each session which contains the above information and is updated every time a job is processed in the backend.
+    3.  Once the `status` is successful, the `publicURL` of the video is visible in response.
