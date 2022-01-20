@@ -1,78 +1,108 @@
 const { exec } = require('child_process');
-const { type } = require('os');
 const binaryPath = "./Tools/Bento4-SDK/bin";
 const relativePath = "../../../uploads/";
-
-// const execute = async (command) => exec(command, { cwd: binaryPath, shell: process.env.ComSpec }, function(error, stdout, stderr) {
-    
-//     if(stdout) {
-//         return stdout;   
-//     }
-//     if (error) {
-//         console.log(error);
-//     }
-// });
 
 async function execute(command) {
 
         return new Promise((resolve, reject) => {
             exec(command, { cwd: binaryPath, shell: process.env.ComSpec }, function(error, stdout, stderr) {
-                if(stdout) {
-                    resolve(stdout);
+                if(stderr) {
+                    reject(stderr);
                 }
                 if (error) {
                     reject(error);
                 }
+                resolve(stdout);
             });
         });
 }
 class Bento4 {
-    
-    static getVideoInfo() {
-
-    }
 
     static async checkFragments(sessionObj) {
 
         try {
             const file = `${relativePath}${sessionObj.session}/${sessionObj.contentId}.mp4`;
-            const data = await execute(`mp4info.exe ${file}`);                
-            const lines = data.split('\n');
+            const execRes = await execute(`mp4info.exe ${file}`);                
+            const lines = execRes.split('\n');
 
             for (const line in lines) {
                 
                 let lineData = lines[line].toString();
                 
                 if( lineData.includes("fragments:  yes")) {
-                    // console.log(lineData);
-                    return true;
+                    return false;
                 }
                 
                 if( lineData.includes("fragments:  no")) {
-                    return false;
+                    return true;
                 }
 
                 if( lineData.includes("No movie found in the file")) {
-                    return new Error("No movie found in the file");
+                    let functionalError = new Error("No movie found in the file");
+                    functionalError.name = "functional";
+                    return functionalError;
                 }
             }
 
         } catch (error) {
-            
+            throw error;
         }
     }
 
-    //fragmentVideo()
+    static async fragmentVideo(sessionObj) {
+        
+        try {
+            const file = `${relativePath}${sessionObj.session}/${sessionObj.contentId}${sessionObj.fileType}`;
+            const outputFile = `${relativePath}${sessionObj.session}/${sessionObj.contentId}_fragmented${sessionObj.fileType}`;
+            const execRes = await execute(`mp4fragment.exe --fragment-duration 4000 ${file} ${outputFile}`);
+            const lines = execRes.split('\n');
+            
+            for (const line in lines) {
+                
+                let lineData = lines[line].toString();
+                
+                if(lineData.includes("ERROR")) {
+                    let functionalError = new Error("An Error Occured while Fragmenting the Video");
+                    functionalError.name = "functional";
+                    throw functionalError;
+                }
+            }
+            
+            return;
+
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static async processVideo(sessionObj) {
+        
+        try {
+            // const file = `${relativePath}${sessionObj.session}/${sessionObj.contentId}_fragmented.mp4`;
+            const fileName = `${relativePath}${sessionObj.session}/${sessionObj.contentId}_fragmented${sessionObj.fileType}`;
+            const outputDir = `${relativePath}${sessionObj.session}/baked`;
+            const execRes = await execute(`mp4dash.bat  --mpd-name manifest.mpd ${fileName} -o ${outputDir} --use-segment-timeline`);
+            const lines = execRes.split('\n');
+
+            for (const line in lines) {
+                
+                let lineData = lines[line].toString();
+                
+                if(lineData.includes("ERROR")) {
+                    let functionalError = new Error("An Error Occured while Fragmenting the Video");
+                    functionalError.name = "functional";
+                    throw functionalError;
+                }
+            }
+
+            return;
+        } catch (error) {
+            throw error;
+        }
+    }
+
     //convertVideo()
     //postConversion()
 }
-
-let sessionObj = {
-	"session": "d393c612-9741-48b5-b211-839e5bab1370",
-	"contentId": 1640890969096,
-	"expiry": "1/1/2022, 12:32 am"
-};
-
-// Bento4.checkFragments(sessionObj);
 
 module.exports = Bento4;

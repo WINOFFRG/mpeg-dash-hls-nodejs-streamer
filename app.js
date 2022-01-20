@@ -25,6 +25,8 @@ app.head('/status', (req,res) => {
     res.status(200).end();
 });
 
+app.use(express.static(path.join(__dirname, '/uploads/da4f9a2e-543d-45d7-99b9-2b8a7147a7ce/baked')));
+
 app.use(config.api.prefix, routes());
 
 /* Error Handling */

@@ -41,7 +41,9 @@ async function updateSession(sessionData) {
 
 async function generateStatus(sessionObj) {
     
+    
     try {
+        // throw new Error("Not implemented");
         let expiry = sessionObj.contentId;
         expiry = new Date(expiry);
         expiry = expiry.setDate(expiry.getDate() + 1);
@@ -56,6 +58,7 @@ async function generateStatus(sessionObj) {
         
     } catch (error) {
         console.log(error);
+        return error;
     }
 }
 

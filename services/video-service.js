@@ -9,7 +9,11 @@ const bento4 = require('./bento4-service');
 const storage = multer.diskStorage({
     destination: async (req, file, cb) => {
         const filePath = path.join(__dirname, `../uploads/${ req.locals.session }`);
-        console.log(file);
+
+        /*
+            File object can be accessed via file
+            console.log(file);
+        */
 
         /* Multer by default doesn't makes file if doesn't exisst, so use FS*/
         await fs.mkdir(filePath, {recursive: true});
@@ -25,9 +29,11 @@ const multerUpload = multer({
     storage: storage,
     limits: { fileSize: 100 * 1024 * 1024 },
     fileFilter: (req, file, cb) => {
-        
+
+        req.locals.fileType = path.extname(file.originalname).toLowerCase();
+
         const allowedTypes = ['.mp4', '.webm', '.mkv', '.avi', '.mpeg'];
-        
+
         if(!allowedTypes.includes(path.extname(file.originalname).toLowerCase())) {    
             return cb(
                 new multer.MulterError('CUSTOM', {
@@ -36,21 +42,25 @@ const multerUpload = multer({
                 })
             );   
         }
-            
+
         cb(null, true);
     }
 }).single('file');
+
+/*
+    .single('file') defines the name of the file input field
+*/
     
 const multerPromise = (req, res) => {
-        
+
     return new Promise((resolve, reject) => {
-        
+
         multerUpload(req, res, function (err) {
-                
+
         if(err) {
             reject(err);
         }
-        
+
         resolve(req.file);
         });
     });
@@ -92,10 +102,12 @@ class videoManager {
 
     static async processVideo(sessionObj) {
 
+        let currentSession = {};
+
         try {
             await session.setStatus(sessionObj);
-            
-            let currentSession = await session.getStaus(sessionObj.session);
+
+            currentSession = await session.getStaus(sessionObj.session);
             currentSession = currentSession['data'];
             currentSession['data'] = {
                 'type' : 'timeline',
@@ -110,35 +122,57 @@ class videoManager {
             }
 
             let jobs = currentSession['data']['jobs'];
-
             await session.updateSession(currentSession);
+
+            logger.info("🔰 1/5 | Video Health");
             // await ffmpeg.checkVideoHealth();
-            const fragmentationRequired = await bento4.checkFragments(sessionObj);
             jobs['health'] = 'success';
             await session.updateSession(currentSession);
 
-            console.log(fragmentationRequired);
-            // return;
-            
+            logger.info("🔰 2/5 | Checking Video");
+            const fragmentationRequired = await bento4.checkFragments(sessionObj);
+
+            logger.info("🔰 3/5 | Fragmenting Video");
             if(fragmentationRequired) {
-                await bento4.fragmentVideo(sessionObj);
+                const response = await bento4.fragmentVideo(sessionObj);
                 jobs['fragments'] = 'success';
+
+                if(response instanceof Error) {
+                    jobs['fragments'] = 'failed';
+                    await session.updateSession(currentSession);
+                    throw res;
+                }
             }
             else {
                 jobs['fragments'] = 'skipped';
-            }
 
-            await session.updateSession(currentSession);        
-            // await bento4.processVideo(sessionObj);
-            // jobs['converting'] = 'success';
+                const fileExt = sessionObj.fileType;
+                const oldFileName = path.join(__dirname, `../uploads/${sessionObj.session}/${sessionObj.contentId}${fileExt}`);
+                const newFileName = path.join(__dirname, `../uploads/${sessionObj.session}/${sessionObj.contentId}_fragmented${fileExt}`);
+                await fs.rename(oldFileName, newFileName);
+            }
+            await session.updateSession(currentSession);
+
+            logger.info("🔰 4/5 | Processing Video");
+            await bento4.processVideo(sessionObj);
+            jobs['converting'] = 'success';
+            await session.updateSession(currentSession);
 
             // await videoManager.postCleanUp(sessionObj);
-            
+
             //uploadVideo()
             //scheduleJobs()
         } catch (error) {
-            console.log(error);
-            //prepareError()
+
+            console.log("Fallback in Catch");
+            logger.error(error);
+
+            if(error.name === 'functional') {
+                currentSession["data"]["status"] = "failed";
+                await session.updateSession(currentSession);
+            }
+
+            return error;
         }
     }
 
