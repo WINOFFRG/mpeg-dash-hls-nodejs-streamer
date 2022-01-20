@@ -14,7 +14,7 @@ Liteweight DASH and HLS VOD Streamer using NodeJS.
    - [Node Fluent FFMPEG](#) 
 2. To start the project, first install the node modules via the command ```npm install``` and then to run the project in **PRODUCTION** mode use ```npm start``` and in **DEVELOPMENT** mode use ```npm dev```.
 
-## API Documentation
+## 📑 API Documentation
 1. Upload Video
 
     Request Type| Endpoint | Meta
@@ -81,3 +81,5 @@ Liteweight DASH and HLS VOD Streamer using NodeJS.
     1.  This route is a ping route especially designed for frontend to show the current session updates and status of each job.
     2.  I have maintained a `status.json` file under each session which contains the above information and is updated every time a job is processed in the backend.
     3.  Once the `status` is successful, the `publicURL` of the video is visible in response.
+
+Services and Working
