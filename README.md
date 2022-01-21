@@ -1,6 +1,7 @@
 # mpeg-dash-hls-nodejs-streamer
-Liteweight DASH and HLS VOD Streamer using NodeJS.
 
+Streaming a video online requires a smart techonology. **HLS** and **MPEG-DASH** streaming allows us to stream any video over HTTP giving a great user experience.
+This application allows you to convert any standard video into HLS or MPEG-DASH Format and store it in **Firebase Storage**. The video has a unique URL which allows user to play the video in any supported player.
 
 ## 🔰 Setting Up the Project
 1. The project has a few external dependencies listed below which are required, So I have made a bash script - **dependencies.sh** which can easily install and setup the required dependencies on `Windows`, `MacOS` and `Linux`. For `Windows` you just need to write ```./dependencies.sh``` in *Git Bash* and for `MacOS` and `Linux` you need to run the same command in *Terminal*.
@@ -10,7 +11,7 @@ Liteweight DASH and HLS VOD Streamer using NodeJS.
 
 ## 🔨 Architecture Design
 
-![](static/Untitled-2022-01-21-0217.png)
+![](static/architecture.png)
 
 ## 📑 API Documentation
 1. Upload Video
@@ -80,13 +81,10 @@ Liteweight DASH and HLS VOD Streamer using NodeJS.
     2.  I have maintained a `status.json` file under each session which contains the above information and is updated every time a job is processed in the backend.
     3.  Once the `status` is successful, the `publicURL` of the video is visible in response.
 
-## Services and Working
+## Screenshots
 
-
-## 👨‍💻 CLI Commands
-
-..\Bento4-SDK-1-6-0-639.x86_64-microsoft-win32\bin\mp4info.exe .\dolby-vision-amaze-1080.mp4
-
-..\Bento4-SDK-1-6-0-639.x86_64-microsoft-win32\bin\mp4fragment.exe ".\Gemini Man  DolbyVisionDolby Atmos_1080.mp4" ".\Gemini Man  DolbyVisionDolby Atmos_1080_frag.mp4" --debug
-
-..\Bento4-SDK-1-6-0-639.x86_64-microsoft-win32\bin\mp4dash.bat --mpd-name manifest.mpd ".\Gemini Man  DolbyVisionDolby Atmos_1080_frag.mp4" -o "Gemini Man  DolbyVisionDolby Atmos_1080" --use-segment-timeline
+## TODO / Extensions
+  - [ ] Add support for multiple file uploads
+  - [ ] Multiple Bitrate Enconding via FFMPEG
+  - [ ] Delete/Restore User Session
+  - [ ] Option to choose between HLS and MPEG-DASH
