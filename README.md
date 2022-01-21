@@ -1,12 +1,16 @@
-# mpeg-dash-hls-nodejs-streamer
+# MPEG-DASH & HLS NodeJS Online Streaming
 
 Streaming a video online requires a smart techonology. **HLS** and **MPEG-DASH** streaming allows us to stream any video over HTTP giving a great user experience.
-This application allows you to convert any standard video into HLS or MPEG-DASH Format and store it in **Firebase Storage**. The video has a unique URL which allows user to play the video in any supported player.
+This application allows you to convert any standard video into HLS or MPEG-DASH Format and store it in **Firebase Storage**. The video has a unique URL which allows user to play the video in any supported player. 😄
+
+    Sample URL: https://storage.googleapis.com/nodejs-streaming.appspot.com/uploads/f6b7c492-e78f-4b26-b95f-81ea8ca21a18/1642708128072/manifest.mpd
+
+    Direct Play: bit.ly/3gp7fdv
 
 ## 🔰 Setting Up the Project
 1. The project has a few external dependencies listed below which are required, So I have made a bash script - **dependencies.sh** which can easily install and setup the required dependencies on `Windows`, `MacOS` and `Linux`. For `Windows` you just need to write ```./dependencies.sh``` in *Git Bash* and for `MacOS` and `Linux` you need to run the same command in *Terminal*.
-   - [Bento4](#)
-   - [Node Fluent FFMPEG](#) 
+   - [Bento4](https://www.bento4.com/)
+   - [Node Fluent FFMPEG](https://github.com/fluent-ffmpeg/node-fluent-ffmpeg) 
 2. To start the project, first install the node modules via the command ```npm install``` and then to run the project in **PRODUCTION** mode use ```npm start``` and in **DEVELOPMENT** mode use ```npm dev```.
 
 ## 🔨 Architecture Design
@@ -81,9 +85,9 @@ This application allows you to convert any standard video into HLS or MPEG-DASH 
     2.  I have maintained a `status.json` file under each session which contains the above information and is updated every time a job is processed in the backend.
     3.  Once the `status` is successful, the `publicURL` of the video is visible in response.
 
-## Screenshots
+## 📷 Screenshots
 
-## TODO / Extensions
+## 🏁 TODO / Extensions
   - [ ] Add support for multiple file uploads
   - [ ] Multiple Bitrate Enconding via FFMPEG
   - [ ] Delete/Restore User Session
