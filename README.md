@@ -3,11 +3,11 @@
 Streaming a video online requires a smart techonology. **HLS** and **MPEG-DASH** streaming allows us to stream any video over HTTP giving a great user experience.
 This application allows you to convert any standard video into HLS or MPEG-DASH Format and store it in **Firebase Storage**. The video has a unique URL which allows user to play the video in any supported player. 😄
 
-    Title: Sniper Will Smith (Gemini Man) Scene
+**Title**: Sniper Will Smith (Gemini Man) Scene
 
-    Sample URL: https://storage.googleapis.com/nodejs-streaming.appspot.com/uploads/f6b7c492-e78f-4b26-b95f-81ea8ca21a18/1642708128072/manifest.mpd
+**Sample URL**: [Play in Shaka Player](https://storage.googleapis.com/nodejs-streaming.appspot.com/uploads/f6b7c492-e78f-4b26-b95f-81ea8ca21a18/1642708128072/manifest.mpd)
 
-    Direct Play: bit.ly/3gp7fdv
+**Manifest URL**: [Copy Link]([bit.ly/3gp7fdv](https://storage.googleapis.com/nodejs-streaming.appspot.com/uploads/f6b7c492-e78f-4b26-b95f-81ea8ca21a18/1642708128072/manifest.mpd))
 
 
 **Credits**: The video is not owned by me. All rights owned by [Paramount Pictures](https://www.youtube.com/paramount)
