@@ -91,6 +91,9 @@ This application allows you to convert any standard video into HLS or MPEG-DASH 
 
 ## 📷 Screenshots
 
+![](static/1.png)
+
+![](static/2.png)
 ## 🏁 TODO / Extensions
   - [ ] Add support for multiple file uploads
   - [ ] Multiple Bitrate Enconding via FFMPEG
