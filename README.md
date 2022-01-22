@@ -5,7 +5,7 @@ This application allows you to convert any standard video into HLS or MPEG-DASH 
 
 **Title**: Sniper Will Smith (Gemini Man) Scene
 
-**Sample URL**: [Play in Shaka Player](https://storage.googleapis.com/nodejs-streaming.appspot.com/uploads/f6b7c492-e78f-4b26-b95f-81ea8ca21a18/1642708128072/manifest.mpd)
+**Sample URL**: [Play in Shaka Player](https://shaka-player-demo.appspot.com/demo/#audiolang=en;textlang=en;uilang=en;asset=https://storage.googleapis.com/nodejs-streaming.appspot.com/uploads/f6b7c492-e78f-4b26-b95f-81ea8ca21a18/1642708128072/manifest.mpd;panel=CUSTOM%20CONTENT;build=compiled)
 
 **Manifest URL**: [Copy Link](https://storage.googleapis.com/nodejs-streaming.appspot.com/uploads/f6b7c492-e78f-4b26-b95f-81ea8ca21a18/1642708128072/manifest.mpd)
 
