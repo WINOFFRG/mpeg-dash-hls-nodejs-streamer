@@ -3,10 +3,14 @@
 Streaming a video online requires a smart techonology. **HLS** and **MPEG-DASH** streaming allows us to stream any video over HTTP giving a great user experience.
 This application allows you to convert any standard video into HLS or MPEG-DASH Format and store it in **Firebase Storage**. The video has a unique URL which allows user to play the video in any supported player. 😄
 
+    Title: Sniper Will Smith (Gemini Man) Scene
+
     Sample URL: https://storage.googleapis.com/nodejs-streaming.appspot.com/uploads/f6b7c492-e78f-4b26-b95f-81ea8ca21a18/1642708128072/manifest.mpd
 
     Direct Play: bit.ly/3gp7fdv
 
+
+**Credits**: The video is not owned by me. All rights owned by [Paramount Pictures](https://www.youtube.com/paramount)
 ## 🔰 Setting Up the Project
 1. The project has a few external dependencies listed below which are required, So I have made a bash script - **dependencies.sh** which can easily install and setup the required dependencies on `Windows`, `MacOS` and `Linux`. For `Windows` you just need to write ```./dependencies.sh``` in *Git Bash* and for `MacOS` and `Linux` you need to run the same command in *Terminal*.
    - [Bento4](https://www.bento4.com/)
