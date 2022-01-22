@@ -7,7 +7,7 @@ This application allows you to convert any standard video into HLS or MPEG-DASH 
 
 **Sample URL**: [Play in Shaka Player](https://storage.googleapis.com/nodejs-streaming.appspot.com/uploads/f6b7c492-e78f-4b26-b95f-81ea8ca21a18/1642708128072/manifest.mpd)
 
-**Manifest URL**: [Copy Link]([bit.ly/3gp7fdv](https://storage.googleapis.com/nodejs-streaming.appspot.com/uploads/f6b7c492-e78f-4b26-b95f-81ea8ca21a18/1642708128072/manifest.mpd))
+**Manifest URL**: [Copy Link](https://storage.googleapis.com/nodejs-streaming.appspot.com/uploads/f6b7c492-e78f-4b26-b95f-81ea8ca21a18/1642708128072/manifest.mpd)
 
 
 **Credits**: The video is not owned by me. All rights owned by [Paramount Pictures](https://www.youtube.com/paramount)
